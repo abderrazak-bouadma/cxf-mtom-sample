@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<settings>
+
+    <servers>
+        <server>
+            <id>fast_repo</id>
+            <username>maven</username>
+            <password>maven</password>
+        </server>
+        <server>
+            <id>fast_repo_snapshot</id>
+            <username>maven</username>
+            <password>maven</password>
+        </server>
+        <server>
+            <id>livraison</id>
+            <username>deploy</username>
+            <password>deploy</password>
+        </server>
+        <server>
+            <id>snapshots</id>
+            <username>admin</username>
+            <password>fastpwd</password>
+        </server>
+        <server>
+            <id>sites</id>
+            <username>maven</username>
+            <password>maven</password>
+        </server>
+        <!-- Artifactory -->
+        <server>
+            <id>central</id>
+            <username>admin</username>
+            <password>fastpwd</password>
+        </server>
+        <server>
+            <id>snapshots</id>
+            <username>admin</username>
+            <password>fastpwd</password>
+        </server>
+    </servers>
+
+    <mirrors>
+        <!-- 	    <mirror>
+                  <name>maven-artifactory-mirror</name>
+                  <url>http://192.168.14.120:8081/artifactory/libs-release</url>
+                  <id>remote-repos</id>
+                  <mirrorOf>*</mirrorOf>
+                </mirror> -->
+        <mirror>
+            <id>maven-nexus-mirror</id>
+            <name>Nexus Server</name>
+            <url>http://dev:7080/nexus-webapp-1.9.1.1/content/groups/public</url>
+            <mirrorOf>*</mirrorOf>
+        </mirror>
+    </mirrors>
+
+    <profiles>
+        <!-- artifactory profile
+        <profile>
+          <repositories>
+            <repository>
+              <snapshots>
+                <enabled>false</enabled>
+              </snapshots>
+              <id>central</id>
+              <name>libs-release</name>
+              <url>http://localhost:8081/artifactory/libs-release</url>
+            </repository>
+            <repository>
+              <snapshots />
+              <id>snapshots</id>
+              <name>libs-snapshot</name>
+              <url>http://localhost:8081/artifactory/libs-snapshot</url>
+            </repository>
+          </repositories>
+          <pluginRepositories>
+            <pluginRepository>
+              <snapshots>
+                <enabled>false</enabled>
+              </snapshots>
+              <id>central</id>
+              <name>plugins-release</name>
+              <url>http://localhost:8081/artifactory/plugins-release</url>
+            </pluginRepository>
+            <pluginRepository>
+              <snapshots />
+              <id>snapshots</id>
+              <name>plugins-snapshot</name>
+              <url>http://localhost:8081/artifactory/plugins-snapshot</url>
+            </pluginRepository>
+          </pluginRepositories>
+          <id>artifactory-profile</id>
+        </profile>
+        -->
+        <!-- nexus profile -->
+        <profile>
+            <id>nexus-repository</id>
+            <repositories>
+                <repository>
+                    <id>central</id>
+                    <name>Nexus Server</name>
+                    <url>http://dev:7080/nexus-webapp-1.9.1.1/content/groups/public</url>
+                    <releases><enabled>true</enabled></releases>
+                    <snapshots><enabled>true</enabled></snapshots>
+                </repository>
+            </repositories>
+            <pluginRepositories>
+                <pluginRepository>
+                    <id>central</id>
+                    <name>Nexus Server</name>
+                    <url>http://dev:7080/nexus-webapp-1.9.1.1/content/groups/public</url>
+                    <releases><enabled>true</enabled></releases>
+                    <snapshots><enabled>true</enabled></snapshots>
+                </pluginRepository>
+            </pluginRepositories>
+        </profile>
+    </profiles>
+    <activeProfiles>
+        <activeProfile>nexus-repository</activeProfile>
+    </activeProfiles>
+</settings>
