@@ -1,7 +1,10 @@
 package com.abz.ws.sei;
 
+import javax.activation.DataHandler;
 import javax.jws.WebMethod;
+import javax.jws.WebParam;
 import javax.jws.WebService;
+import javax.xml.bind.annotation.XmlMimeType;
 
 /**
  * Created with IntelliJ IDEA.
@@ -15,4 +18,7 @@ public interface MtomSampleService {
 
     @WebMethod(operationName = "download")
     SampleVO downloadDocument();
+
+    @WebMethod(operationName = "upload")
+    String uploadDocument(@WebParam(name = "uFile") DataUploader uFile);
 }

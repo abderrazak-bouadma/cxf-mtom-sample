@@ -1,5 +1,6 @@
 package com.abz.ws.service;
 
+import com.abz.ws.sei.DataUploader;
 import com.abz.ws.sei.MtomSampleService;
 import com.abz.ws.sei.SampleVO;
 
@@ -13,6 +14,7 @@ import javax.xml.soap.SOAPFactory;
 import javax.xml.soap.SOAPFault;
 import javax.xml.ws.soap.SOAPFaultException;
 import java.io.*;
+import java.util.Date;
 
 /**
  * Created with IntelliJ IDEA.
@@ -23,7 +25,7 @@ import java.io.*;
  */
 
 @WebService(endpointInterface = "com.abz.ws.sei.MtomSampleService", portName = "MtomPort", targetNamespace = "MtomTarget")
-public class MtomSampleServiceImpl implements MtomSampleService{
+public class MtomSampleServiceImpl implements MtomSampleService {
     @Override
     public SampleVO downloadDocument() {
 
@@ -34,7 +36,7 @@ public class MtomSampleServiceImpl implements MtomSampleService{
         DataSource ds = null;
         try {
             InputStream inputStream = new FileInputStream(loadPdf());
-            ds = new ByteArrayDataSource(inputStream,"application/pdf");
+            ds = new ByteArrayDataSource(inputStream, "application/pdf");
             sampleVO.setContent(new DataHandler(ds));
         } catch (Exception e) {
             SOAPFault fault = null;
@@ -48,6 +50,41 @@ public class MtomSampleServiceImpl implements MtomSampleService{
             }
         }
         return sampleVO;
+    }
+
+    @Override
+    public String uploadDocument(DataUploader uFile) {
+        try {
+            //
+            DataHandler handler = uFile.getDocument();
+            InputStream inputStream = handler.getInputStream();
+
+            //
+            File tmp = File.createTempFile(uFile.getFilename(),".pdf");
+            FileOutputStream outputStream = new FileOutputStream(tmp);
+
+            //
+            byte[] buffer = new byte[1024];
+            int bytesRead = 0;
+            while((bytesRead=inputStream.read(buffer)) != -1) {
+                outputStream.write(buffer,0,bytesRead);
+            }
+
+            //
+            outputStream.flush();
+            outputStream.close();
+            inputStream.close();
+        } catch (IOException e) {
+            SOAPFault fault = null;
+            try {
+                fault = SOAPFactory.newInstance().createFault();
+                fault.setFaultString("Server Side Error : impossible to create a temporary file.\r\n" + e.getMessage());
+                throw new SOAPFaultException(fault);
+            } catch (SOAPException e1) {
+                throw new RuntimeException(e1);
+            }
+        }
+        return new Date().toString();
     }
 
     private File loadPdf() {
